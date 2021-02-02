@@ -3,6 +3,11 @@ const colorDivs = document.querySelectorAll('.color');
 const generateBtn = document.querySelector('.generate');
 const sliders = document.querySelectorAll('input[type="range"]');
 const currentHexes = document.querySelectorAll('.color h2');
+const popUp = document.querySelector('.copy-container');
+const popupBox = popUp.children[0];
+const adjustmentBtn = document.querySelectorAll('.adjust');
+const closeAdjustBtn = document.querySelectorAll('.close-adjustment');
+const sliderContainers = document.querySelectorAll('.sliders');
 
 let initialColors;
 
@@ -19,7 +24,32 @@ colorDivs.forEach((div, index) => {
     });
 });
 
+currentHexes.forEach(hex => {
+    hex.addEventListener('click', () => {
+        copyToClipBoard(hex);
 
+    })
+})
+
+
+popUp.addEventListener('transitionend', () => {
+    popUp.classList.remove("active");
+    popupBox.classList.remove('active');
+  
+
+})
+
+adjustmentBtn.forEach((btn,indx)=> {
+    btn.addEventListener('click', () => {
+        openAdjustmentPanel(indx);
+    })
+})
+
+closeAdjustBtn.forEach((btn, indx) => {
+    btn.addEventListener('click', () => {
+        closeAdjustmentPanel(indx);
+    })
+})
 ///color generator
 function generateHex() {
 
@@ -135,6 +165,28 @@ function resetInputs() {
             slider.value = satValue;
         }
     })
+}
+
+function copyToClipBoard(hex){
+    const el = document.createElement('textarea');
+    el.value = hex.innerText;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    popUp.classList.add('active');
+    popupBox.classList.add('active');
+    
+}
+
+function openAdjustmentPanel(indx) {
+    sliderContainers[indx].classList.toggle('active');
+}
+
+
+function closeAdjustmentPanel(indx) {
+    sliderContainers[indx].classList.remove('active');
 }
 
 randomColors();
